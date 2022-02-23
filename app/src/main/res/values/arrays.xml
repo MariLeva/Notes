@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="notes">
+        <item>Что купить</item>
+        <item>Взять с собой</item>
+        <item>Рецепт</item>
+        <item>План на неделю</item>
+    </string-array>
+
+    <string-array name="note_description">
+        <item>Яйца, молоко, сыр, корм коту</item>
+        <item>Мыльно-рыльно, пижама, купальник, скипас, шлем, маска</item>
+        <item>Джин-базилик: 50 джин, 30 лимон фреш, 15 сахарный сироп, базилик, лед</item>
+        <item>Тренировка на сноуборде, учеба, купить путевку</item>
+    </string-array>
+
+    <string-array name="grade">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+</resources>
