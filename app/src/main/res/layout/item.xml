@@ -17,13 +17,15 @@
             android:id="@+id/textView_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size" />
+            android:textSize="@dimen/text_size"
+            android:layout_marginLeft="@dimen/marginLeft"/>
 
         <TextView
             android:id="@+id/textView_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_date" />
+            android:textSize="@dimen/text_date"
+            android:layout_marginLeft="@dimen/marginLeft"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

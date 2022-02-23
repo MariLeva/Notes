@@ -3,4 +3,5 @@
     <dimen name="text_size">30sp</dimen>
     <dimen name="text_date">20sp</dimen>
     <dimen name="cardCornerRadius">15dp</dimen>
+    <dimen name="marginLeft">10dp</dimen>
 </resources>
