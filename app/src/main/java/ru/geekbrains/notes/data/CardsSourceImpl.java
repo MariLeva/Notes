@@ -21,20 +21,11 @@ public class CardsSourceImpl implements NoteSource{
     public CardsSourceImpl init() {
         String[] notes = resources.getStringArray(R.array.notes);
         String[] note_description = resources.getStringArray(R.array.note_description);
-        int[] color = getColors();
+        int[] color = resources.getIntArray(R.array.colors);
         for (int i = 0; i < notes.length; i++){
             noteSource.add(new Note(notes[i], note_description[i], color[i]));
         }
         return this;
-    }
-
-    private int[] getColors(){
-        TypedArray colors = resources.obtainTypedArray(R.array.colors);
-        int[] answer = new int[colors.length()];
-        for(int i = 0; i < colors.length(); i++){
-            answer[i] = colors.getResourceId(i, 0);
-        }
-        return answer;
     }
 
     @Override
