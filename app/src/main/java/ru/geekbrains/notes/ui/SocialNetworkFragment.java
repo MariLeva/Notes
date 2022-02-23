@@ -13,9 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ru.geekbrains.notes.R;
+import ru.geekbrains.notes.data.CardsSourceImpl;
+import ru.geekbrains.notes.data.NoteSource;
 
 
-public class SocialNetworkFragment extends Fragment {
+public class SocialNetworkFragment extends Fragment implements OnItemClickListener {
 
     SocialNetworkAdapter socialNetworkAdapter;
 
@@ -37,16 +39,18 @@ public class SocialNetworkFragment extends Fragment {
         initRecycler(view);
     }
 
-    void initAdapter(){
+    void initAdapter() {
         socialNetworkAdapter = new SocialNetworkAdapter();
         socialNetworkAdapter.setData(getData());
+        socialNetworkAdapter.setOnItemClickListener(SocialNetworkFragment.this);
     }
 
-    String[] getData(){
-        return getResources().getStringArray(R.array.notes);
+    NoteSource getData() {
+        NoteSource data = new CardsSourceImpl(getResources()).init();
+        return data;
     }
 
-    void initRecycler(View view){
+    void initRecycler(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -55,4 +59,8 @@ public class SocialNetworkFragment extends Fragment {
     }
 
 
+    @Override
+    public void onItemClick(int position) {
+        NoteSource data = getData();
+    }
 }
