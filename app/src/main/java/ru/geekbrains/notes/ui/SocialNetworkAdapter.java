@@ -59,12 +59,14 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView note;
         private TextView noteDate;
+        private TextView noteText;
         private LinearLayout color;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             note = itemView.findViewById(R.id.textView_title);
             noteDate = itemView.findViewById(R.id.textView_date);
+            noteText = itemView.findViewById(R.id.textView_text);
             color = itemView.findViewById(R.id.linear_color);
             color.setOnClickListener(view -> {
                 if (onItemClickListener != null){
@@ -76,6 +78,7 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
         public void setDate (Note date){
             note.setText(date.getNoteName());
             noteDate.setText(format.format(date.getDate()));
+            noteText.setText(date.getNoteText());
             color.setBackgroundColor(date.getColor());
         }
     }

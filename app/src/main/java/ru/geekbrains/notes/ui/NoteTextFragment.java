@@ -11,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
@@ -36,6 +38,8 @@ public class NoteTextFragment extends Fragment {
     TextView tvDate;
     TextView tvNoteText;
     LinearLayout linearLayoutNoteText;
+    EditText editText;
+    MaterialButton button;
 
     static final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -81,6 +85,9 @@ public class NoteTextFragment extends Fragment {
         tvDate = view.findViewById(R.id.date);
         tvNoteText = view.findViewById(R.id.nameNoteText);
         linearLayoutNoteText = view.findViewById(R.id.linearNoteText);
+        editText = view.findViewById(R.id.edit);
+        button = view.findViewById(R.id.btn);
+
         tvTitle.setText(note.getNoteName());
         tvDate.setText(format.format(note.getDate()));
         tvNoteText.setText(note.getNoteText());
@@ -107,7 +114,19 @@ public class NoteTextFragment extends Fragment {
                                     }).show();
                                     return true;
                                 case R.id.popup_edit:
-                                    return true;
+                                    editText.setText(tvNoteText.getText());
+                                    editText.setVisibility(View.VISIBLE);
+                                    button.setVisibility(View.VISIBLE);
+                                    button.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            tvNoteText.setText(editText.getText());
+                                            editText.setText("");
+                                            editText.setVisibility(View.INVISIBLE);
+                                            button.setVisibility(View.INVISIBLE);
+                                        }
+                                    });
+                                   return true;
                             }
                             return true;
                         }

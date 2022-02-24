@@ -4,10 +4,10 @@
     android:id="@+id/linearNoteText"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mint_100"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    android:background="@color/mint_100"
     tools:context=".ui.NoteTextFragment">
 
     <TextView
@@ -26,7 +26,21 @@
     <TextView
         android:id="@+id/nameNoteText"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:textSize="@dimen/text_size" />
+
+    <EditText
+        android:id="@+id/edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        android:text="Ok" />
 
 </LinearLayout>
