@@ -65,6 +65,8 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
 
     @Override
     public void onItemClick(int position) {
-        NoteSource data = getData();
+        NoteSource noteSource = getData();
+        NoteTextFragment noteTextFragment = NoteTextFragment.newInstance(noteSource.getNote(position));
+        requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, noteTextFragment).addToBackStack("").commit();
     }
 }

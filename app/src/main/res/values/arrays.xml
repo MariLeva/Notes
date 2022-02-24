@@ -15,8 +15,8 @@
     </string-array>
 
     <array name="colors">
-        <item>@color/mint_100</item>
         <item>@color/yellow_100</item>
+        <item>@color/mint_100</item>
         <item>@color/pink_100</item>
         <item>@color/green_100</item>
     </array>

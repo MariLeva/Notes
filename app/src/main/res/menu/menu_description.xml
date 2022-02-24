@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/toolbar_add"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="@string/toolBar_add"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/toolbar_save"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="@string/toolBar_save"
+        app:showAsAction="ifRoom" />
+</menu>

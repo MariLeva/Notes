@@ -14,7 +14,7 @@ public class CardsSourceImpl implements NoteSource{
     private Resources resources;
 
     public CardsSourceImpl(Resources resources) {
-        noteSource = new ArrayList<>(7);
+        noteSource = new ArrayList<>();
         this.resources = resources;
     }
 
