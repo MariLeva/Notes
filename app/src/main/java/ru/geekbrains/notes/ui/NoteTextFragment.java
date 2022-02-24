@@ -1,5 +1,6 @@
 package ru.geekbrains.notes.ui;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,10 +8,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 
@@ -26,7 +31,12 @@ import ru.geekbrains.notes.data.NoteSource;
  */
 public class NoteTextFragment extends Fragment {
     static final String ARG_INDEX = "index";
-    CardsSourceImpl noteSource;
+    Note note;
+    TextView tvTitle;
+    TextView tvDate;
+    TextView tvNoteText;
+    LinearLayout linearLayoutNoteText;
+
     static final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 
     public NoteTextFragment() {
@@ -60,16 +70,50 @@ public class NoteTextFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Bundle agr = getArguments();
         if (agr != null) {
-            Note note = (Note) agr.getParcelable(ARG_INDEX);
-            TextView tvTitle = view.findViewById(R.id.nameNote);
-            TextView tvDate = view.findViewById(R.id.date);
-            TextView tvNoteText = view.findViewById(R.id.nameNoteText);
-            LinearLayout linearLayoutNoteText = view.findViewById(R.id.linearNoteText);
-            tvTitle.setText(note.getNoteName());
-            tvDate.setText(format.format(note.getDate()));
-            tvNoteText.setText(note.getNoteText());
-            linearLayoutNoteText.setBackgroundColor(note.getColor());
+            note = (Note) agr.getParcelable(ARG_INDEX);
         }
+        initView(view);
+        initPopupMenu(view);
     }
 
+    private void initView(View view){
+        tvTitle = view.findViewById(R.id.nameNote);
+        tvDate = view.findViewById(R.id.date);
+        tvNoteText = view.findViewById(R.id.nameNoteText);
+        linearLayoutNoteText = view.findViewById(R.id.linearNoteText);
+        tvTitle.setText(note.getNoteName());
+        tvDate.setText(format.format(note.getDate()));
+        tvNoteText.setText(note.getNoteText());
+        linearLayoutNoteText.setBackgroundColor(note.getColor());
+    }
+
+    private void initPopupMenu(View view) {
+        TextView textView = view.findViewById(R.id.nameNoteText);
+        textView.setOnClickListener(v -> {
+                    Activity activity = requireActivity();
+                    PopupMenu popupMenu = new PopupMenu(activity, v);
+                    activity.getMenuInflater().inflate(R.menu.popup, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            switch (menuItem.getItemId()) {
+                                case R.id.popup_clean:
+                                    Snackbar.make(linearLayoutNoteText, "Очистить заметку?", Snackbar.LENGTH_LONG)
+                                    .setAction("Clear", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            tvNoteText.setText("");
+                                        }
+                                    }).show();
+                                    return true;
+                                case R.id.popup_edit:
+                                    return true;
+                            }
+                            return true;
+                        }
+                    });
+                    popupMenu.show();
+                }
+        );
+    }
 }
