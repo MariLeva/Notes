@@ -9,6 +9,15 @@
     <item
         android:id="@+id/toolbar_exit"
         android:title="@string/toolbar_exit"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/toolbar_add"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="@string/toolBar_add"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/toolbar_clear"
         android:icon="@android:drawable/ic_menu_close_clear_cancel"
-        app:showAsAction="always"/>
+        android:title="@string/toolBar_clear_all"
+        app:showAsAction="ifRoom" />
 </menu>

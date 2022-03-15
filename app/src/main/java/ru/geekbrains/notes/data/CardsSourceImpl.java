@@ -37,4 +37,24 @@ public class CardsSourceImpl implements NoteSource{
     public int size() {
         return noteSource.size();
     }
+
+    @Override
+    public void deleteNote(int position) {
+        noteSource.remove(position);
+    }
+
+    @Override
+    public void updateNote(int position, Note note) {
+        noteSource.set(position, note);
+    }
+
+    @Override
+    public void addNote(Note note) {
+        noteSource.add(note);
+    }
+
+    @Override
+    public void clearNote() {
+        noteSource.clear();
+    }
 }
