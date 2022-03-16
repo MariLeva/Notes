@@ -6,10 +6,18 @@ import android.os.Parcelable;
 import java.util.Date;
 
 public class Note implements Parcelable {
-    private final String noteText;
+    private String noteText;
     private Date date;
-    private final String noteName;
-    private final int color;
+    private String noteName;
+    private int color;
+
+    public void setNoteText(String noteText) {
+        this.noteText = noteText;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public Note(String note, String noteText, int color) {
         this.noteName = note;

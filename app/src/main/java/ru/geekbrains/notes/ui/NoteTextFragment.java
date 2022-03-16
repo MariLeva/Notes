@@ -1,6 +1,7 @@
 package ru.geekbrains.notes.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +24,12 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 
+import ru.geekbrains.notes.MainActivity;
 import ru.geekbrains.notes.R;
 import ru.geekbrains.notes.data.CardsSourceImpl;
 import ru.geekbrains.notes.data.Note;
 import ru.geekbrains.notes.data.NoteSource;
+import ru.geekbrains.notes.observe.Publisher;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +39,7 @@ import ru.geekbrains.notes.data.NoteSource;
 public class NoteTextFragment extends Fragment {
     static final String ARG_INDEX = "index";
     Note note;
+
     TextView tvTitle;
     TextView tvDate;
     TextView tvNoteText;
@@ -78,6 +84,7 @@ public class NoteTextFragment extends Fragment {
         }
         initView(view);
         initPopupMenu(view);
+        setHasOptionsMenu(true);
     }
 
     private void initView(View view){
@@ -121,9 +128,12 @@ public class NoteTextFragment extends Fragment {
                                         @Override
                                         public void onClick(View view) {
                                             tvNoteText.setText(editText.getText());
+                                            note.setNoteText(editText.getText().toString());
+                                            ((MainActivity) requireActivity()).getPublisher().notifySingle(note);
                                             editText.setText("");
                                             editText.setVisibility(View.INVISIBLE);
                                             button.setVisibility(View.INVISIBLE);
+                                           // ((MainActivity) requireActivity()).getSupportFragmentManager().popBackStack();
                                         }
                                     });
                                    return true;
@@ -135,4 +145,5 @@ public class NoteTextFragment extends Fragment {
                 }
         );
     }
+
 }
