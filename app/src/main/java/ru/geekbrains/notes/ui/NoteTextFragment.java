@@ -2,6 +2,7 @@ package ru.geekbrains.notes.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -23,6 +25,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import ru.geekbrains.notes.MainActivity;
 import ru.geekbrains.notes.R;
@@ -39,10 +42,9 @@ import ru.geekbrains.notes.observe.Publisher;
 public class NoteTextFragment extends Fragment {
     static final String ARG_INDEX = "index";
     Note note;
-
+    Calendar calendar;
     TextView tvTitle;
     TextView tvDate;
-    TextView tvNoteText;
     LinearLayout linearLayoutNoteText;
     EditText editText;
     MaterialButton button;
@@ -84,26 +86,56 @@ public class NoteTextFragment extends Fragment {
         }
         initView(view);
         initPopupMenu(view);
-        setHasOptionsMenu(true);
     }
 
     private void initView(View view){
         tvTitle = view.findViewById(R.id.nameNote);
         tvDate = view.findViewById(R.id.date);
-        tvNoteText = view.findViewById(R.id.nameNoteText);
         linearLayoutNoteText = view.findViewById(R.id.linearNoteText);
         editText = view.findViewById(R.id.edit);
         button = view.findViewById(R.id.btn);
+        calendar = Calendar.getInstance();
 
         tvTitle.setText(note.getNoteName());
+        editText.setText(note.getNoteText());
         tvDate.setText(format.format(note.getDate()));
-        tvNoteText.setText(note.getNoteText());
         linearLayoutNoteText.setBackgroundColor(note.getColor());
+        calendar.setTime(note.getDate());
+        ((DatePicker) view.findViewById(R.id.input_date)).init(calendar.get(Calendar.YEAR)-1,
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                null);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ((DatePicker) view.findViewById(R.id.input_date)).setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
+                @Override
+                public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
+                    calendar.set(Calendar.YEAR,i);
+                    calendar.set(Calendar.MONTH,i1);
+                    calendar.set(Calendar.DAY_OF_MONTH,i2);
+                }
+            });
+        }
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                note.setNoteText(editText.getText().toString());
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
+                    DatePicker datePicker = ((DatePicker) view.findViewById(R.id.input_date));
+                    calendar.set(Calendar.YEAR, datePicker.getYear());
+                    calendar.set(Calendar.MONTH, datePicker.getMonth());
+                    calendar.set(Calendar.DAY_OF_MONTH,datePicker.getDayOfMonth());
+                }
+                note.setDate(calendar.getTime());
+
+                ((MainActivity) requireActivity()).getPublisher().notifySingle(note);
+                ((MainActivity) requireActivity()).getSupportFragmentManager().popBackStack();
+            }
+        });
     }
 
     private void initPopupMenu(View view) {
-        TextView textView = view.findViewById(R.id.nameNoteText);
-        textView.setOnClickListener(v -> {
+        editText.setOnClickListener(v -> {
                     Activity activity = requireActivity();
                     PopupMenu popupMenu = new PopupMenu(activity, v);
                     activity.getMenuInflater().inflate(R.menu.popup, popupMenu.getMenu());
@@ -116,27 +148,10 @@ public class NoteTextFragment extends Fragment {
                                     .setAction("Clear", new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
-                                            tvNoteText.setText("");
+                                            editText.setText("");
                                         }
                                     }).show();
                                     return true;
-                                case R.id.popup_edit:
-                                    editText.setText(tvNoteText.getText());
-                                    editText.setVisibility(View.VISIBLE);
-                                    button.setVisibility(View.VISIBLE);
-                                    button.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            tvNoteText.setText(editText.getText());
-                                            note.setNoteText(editText.getText().toString());
-                                            ((MainActivity) requireActivity()).getPublisher().notifySingle(note);
-                                            editText.setText("");
-                                            editText.setVisibility(View.INVISIBLE);
-                                            button.setVisibility(View.INVISIBLE);
-                                           // ((MainActivity) requireActivity()).getSupportFragmentManager().popBackStack();
-                                        }
-                                    });
-                                   return true;
                             }
                             return true;
                         }

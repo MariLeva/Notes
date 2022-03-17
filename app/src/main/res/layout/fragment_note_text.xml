@@ -23,24 +23,24 @@
         android:fontFamily="cursive"
         android:textSize="@dimen/text_date" />
 
-    <TextView
-        android:id="@+id/nameNoteText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size" />
-
     <EditText
         android:id="@+id/edit"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <DatePicker
+        android:id="@+id/input_date"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible" />
+        android:layout_gravity="center"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="invisible"
         android:text="Ok" />
 
 </LinearLayout>

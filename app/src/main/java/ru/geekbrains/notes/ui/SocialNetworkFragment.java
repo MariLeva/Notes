@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.Calendar;
 
 import ru.geekbrains.notes.MainActivity;
 import ru.geekbrains.notes.R;
@@ -32,7 +35,6 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     private SocialNetworkAdapter socialNetworkAdapter;
     private NoteSource noteSource;
     private RecyclerView recyclerView;
-    private Publisher publisher;
 
 
     public static SocialNetworkFragment newInstance() {
@@ -55,7 +57,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     }
 
     void initAdapter() {
-        socialNetworkAdapter = new SocialNetworkAdapter();
+        socialNetworkAdapter = new SocialNetworkAdapter(this);
         noteSource = new CardsSourceImpl(getResources()).init();
         socialNetworkAdapter.setData(noteSource);
         socialNetworkAdapter.setOnItemClickListener(SocialNetworkFragment.this);
@@ -110,7 +112,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
                 new DialogFragmentExit().show(requireActivity().getSupportFragmentManager(), DialogFragmentExit.TAG);
                 return true;
             case R.id.toolbar_add:
-                noteSource.addNote(new Note("New notes", "Text notes", R.color.blue_100));
+                noteSource.addNote(new Note("New notes", "Text notes", R.color.blue_100, Calendar.getInstance().getTime()));
                 socialNetworkAdapter.notifyItemInserted(noteSource.size() - 1);
                 recyclerView.scrollToPosition(noteSource.size() - 1);
                 return true;
@@ -120,5 +122,26 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        requireActivity().getMenuInflater().inflate(R.menu.menu_note_context,menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        int position = socialNetworkAdapter.getPosition();
+        switch (item.getItemId()){
+            case R.id.toolBar_del:{
+                noteSource.deleteNote(position);
+                socialNetworkAdapter.notifyItemRemoved(position);
+                return true;
+            }
+
+        }
+
+        return super.onContextItemSelected(item);
     }
 }

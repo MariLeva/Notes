@@ -5,8 +5,4 @@
     <item
         android:id="@+id/popup_clean"
         android:title="@string/popup_clean" />
-
-    <item
-        android:id="@+id/popup_edit"
-        android:title="@string/popup_edit"/>
 </menu>

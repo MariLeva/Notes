@@ -19,17 +19,18 @@ public class Note implements Parcelable {
         this.date = date;
     }
 
-    public Note(String note, String noteText, int color) {
+    public Note(String note, String noteText, int color, Date date) {
         this.noteName = note;
         this.noteText = noteText;
         this.color = color;
-        this.date = new Date();
+        this.date = date;
     }
 
     protected Note(Parcel in) {
         noteText = in.readString();
         noteName = in.readString();
         color = in.readInt();
+        date = new Date(in.readLong());
     }
 
     public static final Creator<Note> CREATOR = new Creator<Note>() {
@@ -70,5 +71,6 @@ public class Note implements Parcelable {
         parcel.writeString(noteText);
         parcel.writeString(noteName);
         parcel.writeInt(color);
+        parcel.writeLong(date.getTime());
     }
 }
