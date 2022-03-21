@@ -1,8 +1,6 @@
 package ru.geekbrains.notes.data;
 
 import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,16 +8,16 @@ import java.util.List;
 
 import ru.geekbrains.notes.R;
 
-public class CardsSourceImpl implements NoteSource{
+public class ArraysCardsSourceImpl implements NoteSource{
     private List<Note> noteSource;
     private Resources resources;
 
-    public CardsSourceImpl(Resources resources) {
+    public ArraysCardsSourceImpl(Resources resources) {
         noteSource = new ArrayList<>();
         this.resources = resources;
     }
 
-    public CardsSourceImpl init() {
+    public ArraysCardsSourceImpl init() {
         String[] notes = resources.getStringArray(R.array.notes);
         String[] note_description = resources.getStringArray(R.array.note_description);
         int[] color = resources.getIntArray(R.array.colors);

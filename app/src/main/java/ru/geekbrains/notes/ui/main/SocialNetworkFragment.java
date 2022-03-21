@@ -1,5 +1,7 @@
 package ru.geekbrains.notes.ui.main;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,12 +19,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 
 import java.util.Calendar;
 
+import ru.geekbrains.notes.data.SharedPreferencesCardsSourceImpl;
 import ru.geekbrains.notes.ui.MainActivity;
 import ru.geekbrains.notes.R;
-import ru.geekbrains.notes.data.CardsSourceImpl;
+import ru.geekbrains.notes.data.ArraysCardsSourceImpl;
 import ru.geekbrains.notes.data.Note;
 import ru.geekbrains.notes.data.NoteSource;
 import ru.geekbrains.notes.observe.Observer;
@@ -37,6 +41,12 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     private NoteSource noteSource;
     private RecyclerView recyclerView;
 
+    static final int SOURCE_ARRAY = 1;
+    static final int SOURCE_SP = 2;
+    static final int SOURCE_GF = 3;
+
+    static String KEY_SP_S1 = "key1";
+    static String KEY_SP_S1_CELL1 = "s1_cell1";
 
     public static SocialNetworkFragment newInstance() {
         return new SocialNetworkFragment();
@@ -53,13 +63,76 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        initAdapter();
+        setupSource();
         initRecycler(view);
+        initRadioGroup(view);
+    }
+
+    void setupSource(){
+        switch (getCurrentSource()){
+            case SOURCE_ARRAY:
+                noteSource = new ArraysCardsSourceImpl(getResources()).init();
+                break;
+            case SOURCE_SP:
+                noteSource =new SharedPreferencesCardsSourceImpl(requireContext()
+                        .getSharedPreferences(SharedPreferencesCardsSourceImpl.KEY_SP_2, Context.MODE_PRIVATE)).init();
+                break;
+            case SOURCE_GF:
+                break;
+        }
+        initAdapter();
+    }
+
+    private void initRadioGroup(View view){
+        view.findViewById(R.id.sourceArrays).setOnClickListener(listener);
+        view.findViewById(R.id.sourceSP).setOnClickListener(listener);
+        view.findViewById(R.id.sourceGF).setOnClickListener(listener);
+
+        switch (getCurrentSource()){
+            case SOURCE_ARRAY:
+                ((RadioButton) view.findViewById(R.id.sourceArrays)).setChecked(true);
+                break;
+            case SOURCE_SP:
+                ((RadioButton) view.findViewById(R.id.sourceSP)).setChecked(true);
+                break;
+            case SOURCE_GF:
+                ((RadioButton) view.findViewById(R.id.sourceGF)).setChecked(true);
+                break;
+        }
+    }
+
+    View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.sourceArrays:
+                    setCurrentSource(SOURCE_ARRAY);
+                    break;
+                case R.id.sourceSP:
+                    setCurrentSource(SOURCE_SP);
+                    break;
+                case R.id.sourceGF:
+                    setCurrentSource(SOURCE_GF);
+                    break;
+            }
+            setupSource();
+        }
+    };
+
+    void setCurrentSource(int currentSource){
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences(KEY_SP_S1, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit().putInt(KEY_SP_S1_CELL1, currentSource);
+        editor.apply();
+    }
+
+    int getCurrentSource(){
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences(KEY_SP_S1, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(KEY_SP_S1_CELL1, SOURCE_ARRAY);
     }
 
     void initAdapter() {
-        socialNetworkAdapter = new SocialNetworkAdapter(this);
-        noteSource = new CardsSourceImpl(getResources()).init();
+        if (socialNetworkAdapter == null)
+            socialNetworkAdapter = new SocialNetworkAdapter(this);
         socialNetworkAdapter.setData(noteSource);
         socialNetworkAdapter.setOnItemClickListener(SocialNetworkFragment.this);
     }
