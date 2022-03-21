@@ -37,11 +37,12 @@ public class NoteTextFragment extends Fragment {
     static final String ARG_INDEX = "index";
     Note note;
     Calendar calendar;
-    TextView tvTitle;
     TextView tvDate;
     LinearLayout linearLayoutNoteText;
     EditText editText;
+    EditText editTitle;
     MaterialButton button;
+    DatePicker datePicker;
 
     static final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -83,24 +84,26 @@ public class NoteTextFragment extends Fragment {
     }
 
     private void initView(View view){
-        tvTitle = view.findViewById(R.id.nameNote);
         tvDate = view.findViewById(R.id.date);
         linearLayoutNoteText = view.findViewById(R.id.linearNoteText);
         editText = view.findViewById(R.id.edit);
+        editTitle = view.findViewById(R.id.edit_title);
         button = view.findViewById(R.id.btn);
         calendar = Calendar.getInstance();
+        datePicker = view.findViewById(R.id.input_date);
 
-        tvTitle.setText(note.getNoteName());
         editText.setText(note.getNoteText());
+        editTitle.setText(note.getNoteName());
         tvDate.setText(format.format(note.getDate()));
-        linearLayoutNoteText.setBackgroundColor(note.getColor());
+        if (note.getColor() < 0)
+            linearLayoutNoteText.setBackgroundColor(note.getColor());
         calendar.setTime(note.getDate());
         ((DatePicker) view.findViewById(R.id.input_date)).init(calendar.get(Calendar.YEAR)-1,
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH),
                 null);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ((DatePicker) view.findViewById(R.id.input_date)).setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
+            datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
                 @Override
                 public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
                     calendar.set(Calendar.YEAR,i);
@@ -113,6 +116,7 @@ public class NoteTextFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 note.setNoteText(editText.getText().toString());
+                note.setNoteName(editTitle.getText().toString());
 
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
                     DatePicker datePicker = ((DatePicker) view.findViewById(R.id.input_date));
@@ -123,7 +127,7 @@ public class NoteTextFragment extends Fragment {
                 note.setDate(calendar.getTime());
 
                 ((MainActivity) requireActivity()).getPublisher().notifySingle(note);
-                ((MainActivity) requireActivity()).getSupportFragmentManager().popBackStack();
+                //((MainActivity) requireActivity()).getSupportFragmentManager().popBackStack();
             }
         });
     }
@@ -145,6 +149,8 @@ public class NoteTextFragment extends Fragment {
                                             editText.setText("");
                                         }
                                     }).show();
+                                    return true;
+                                case R.id.popup_edit:
                                     return true;
                             }
                             return true;

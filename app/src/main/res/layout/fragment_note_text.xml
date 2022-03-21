@@ -11,12 +11,6 @@
     tools:context=".ui.editor.NoteTextFragment">
 
     <TextView
-        android:id="@+id/nameNote"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_date" />
-
-    <TextView
         android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,9 +18,15 @@
         android:textSize="@dimen/text_date" />
 
     <EditText
-        android:id="@+id/edit"
+        android:id="@+id/edit_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_date" />
 
     <DatePicker
         android:id="@+id/input_date"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:calendarViewShown="false"
-        android:datePickerMode="spinner"/>
+        android:datePickerMode="spinner" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn"

@@ -23,6 +23,7 @@ import android.widget.RadioButton;
 
 import java.util.Calendar;
 
+import ru.geekbrains.notes.data.ColorIndexConverter;
 import ru.geekbrains.notes.data.FireStoreCardsSourceImpl;
 import ru.geekbrains.notes.data.FireStoreResponse;
 import ru.geekbrains.notes.data.SharedPreferencesCardsSourceImpl;
@@ -189,9 +190,22 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
                 new DialogFragmentExit().show(requireActivity().getSupportFragmentManager(), DialogFragmentExit.TAG);
                 return true;
             case R.id.toolbar_add:
-                noteSource.addNote(new Note("New notes", "Text notes", R.color.blue_100, Calendar.getInstance().getTime()));
-                socialNetworkAdapter.notifyItemInserted(noteSource.size() - 1);
-                recyclerView.scrollToPosition(noteSource.size() - 1);
+                Observer observer = new Observer() {
+                    @Override
+                    public void updateNote(Note note) {
+                        ((MainActivity) requireActivity()).getPublisher().unsubscribe(this);
+                        noteSource.addNote(note);
+                        socialNetworkAdapter.notifyItemInserted(noteSource.size() - 1);
+                        recyclerView.scrollToPosition(noteSource.size() - 1);
+                    }
+                };
+                ((MainActivity) requireActivity()).getPublisher().subscribe(observer);
+                ((MainActivity) requireActivity()).getNavigation().addFragment(NoteTextFragment.newInstance(
+                        new Note("",
+                                "",
+                                ColorIndexConverter.getColorByIndex(ColorIndexConverter.randomColorIndex()),
+                                Calendar.getInstance().getTime())
+                ), true);
                 return true;
             case R.id.toolbar_clear:
                 noteSource.clearNote();
