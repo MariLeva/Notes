@@ -10,6 +10,15 @@ public class Note implements Parcelable {
     private Date date;
     private String noteName;
     private int color;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public void setNoteText(String noteText) {
         this.noteText = noteText;

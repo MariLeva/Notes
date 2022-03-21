@@ -23,6 +23,8 @@ import android.widget.RadioButton;
 
 import java.util.Calendar;
 
+import ru.geekbrains.notes.data.FireStoreCardsSourceImpl;
+import ru.geekbrains.notes.data.FireStoreResponse;
 import ru.geekbrains.notes.data.SharedPreferencesCardsSourceImpl;
 import ru.geekbrains.notes.ui.MainActivity;
 import ru.geekbrains.notes.R;
@@ -35,7 +37,7 @@ import ru.geekbrains.notes.ui.editor.DialogFragmentExit;
 import ru.geekbrains.notes.ui.editor.NoteTextFragment;
 
 
-public class SocialNetworkFragment extends Fragment implements OnItemClickListener {
+public class SocialNetworkFragment extends Fragment implements OnItemClickListener, FireStoreResponse {
 
     private SocialNetworkAdapter socialNetworkAdapter;
     private NoteSource noteSource;
@@ -68,27 +70,28 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         initRadioGroup(view);
     }
 
-    void setupSource(){
-        switch (getCurrentSource()){
+    void setupSource() {
+        switch (getCurrentSource()) {
             case SOURCE_ARRAY:
                 noteSource = new ArraysCardsSourceImpl(getResources()).init();
                 break;
             case SOURCE_SP:
-                noteSource =new SharedPreferencesCardsSourceImpl(requireContext()
+                noteSource = new SharedPreferencesCardsSourceImpl(requireContext()
                         .getSharedPreferences(SharedPreferencesCardsSourceImpl.KEY_SP_2, Context.MODE_PRIVATE)).init();
                 break;
             case SOURCE_GF:
+                noteSource = new FireStoreCardsSourceImpl().init(this);
                 break;
         }
         initAdapter();
     }
 
-    private void initRadioGroup(View view){
+    private void initRadioGroup(View view) {
         view.findViewById(R.id.sourceArrays).setOnClickListener(listener);
         view.findViewById(R.id.sourceSP).setOnClickListener(listener);
         view.findViewById(R.id.sourceGF).setOnClickListener(listener);
 
-        switch (getCurrentSource()){
+        switch (getCurrentSource()) {
             case SOURCE_ARRAY:
                 ((RadioButton) view.findViewById(R.id.sourceArrays)).setChecked(true);
                 break;
@@ -104,7 +107,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            switch (view.getId()){
+            switch (view.getId()) {
                 case R.id.sourceArrays:
                     setCurrentSource(SOURCE_ARRAY);
                     break;
@@ -119,13 +122,13 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         }
     };
 
-    void setCurrentSource(int currentSource){
+    void setCurrentSource(int currentSource) {
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(KEY_SP_S1, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit().putInt(KEY_SP_S1_CELL1, currentSource);
         editor.apply();
     }
 
-    int getCurrentSource(){
+    int getCurrentSource() {
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(KEY_SP_S1, Context.MODE_PRIVATE);
         return sharedPreferences.getInt(KEY_SP_S1_CELL1, SOURCE_ARRAY);
     }
@@ -151,7 +154,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         recyclerView.setItemAnimator(animator);
 
         DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
-        itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator,null));
+        itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));
         recyclerView.addItemDecoration(itemDecoration);
     }
 
@@ -167,7 +170,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
             }
         };
         ((MainActivity) requireActivity()).getPublisher().subscribe(observer);
-        ((MainActivity) requireActivity()).getNavigation().addFragment(NoteTextFragment.newInstance(noteSource.getNote(position)),true);
+        ((MainActivity) requireActivity()).getNavigation().addFragment(NoteTextFragment.newInstance(noteSource.getNote(position)), true);
     }
 
     @Override
@@ -180,7 +183,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         int id = item.getItemId();
         switch (id) {
             case R.id.toolbar_about:
-               requireActivity().getSupportFragmentManager().beginTransaction().addToBackStack("").add(R.id.container, new AboutFragment()).commit();
+                requireActivity().getSupportFragmentManager().beginTransaction().addToBackStack("").add(R.id.container, new AboutFragment()).commit();
                 return true;
             case R.id.toolbar_exit:
                 new DialogFragmentExit().show(requireActivity().getSupportFragmentManager(), DialogFragmentExit.TAG);
@@ -201,14 +204,14 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        requireActivity().getMenuInflater().inflate(R.menu.menu_note_context,menu);
+        requireActivity().getMenuInflater().inflate(R.menu.menu_note_context, menu);
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         int position = socialNetworkAdapter.getPosition();
-        switch (item.getItemId()){
-            case R.id.toolBar_del:{
+        switch (item.getItemId()) {
+            case R.id.toolBar_del: {
                 noteSource.deleteNote(position);
                 socialNetworkAdapter.notifyItemRemoved(position);
                 return true;
@@ -217,5 +220,10 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         }
 
         return super.onContextItemSelected(item);
+    }
+
+    @Override
+    public void initialized(NoteSource noteSource) {
+        initAdapter();
     }
 }
