@@ -48,22 +48,30 @@ public class SharedPreferencesCardsSourceImpl implements NoteSource{
     @Override
     public void deleteNote(int position) {
         noteSource.remove(position);
+        saveToJson();
     }
 
     @Override
     public void updateNote(int position, Note note) {
         noteSource.set(position, note);
+        saveToJson();
     }
 
     @Override
     public void addNote(Note note) {
         noteSource.add(note);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(KEY_CELL_1, new GsonBuilder().create().toJson(noteSource)).apply();
+        saveToJson();
     }
 
     @Override
     public void clearNote() {
         noteSource.clear();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_CELL_1, null).apply();
+    }
+
+    public void saveToJson(){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_CELL_1, new GsonBuilder().create().toJson(noteSource)).apply();
     }
 }
