@@ -12,4 +12,7 @@
     <string name="toolBar_clear_all">clear all</string>
     <string name="delete">delete</string>
     <string name="toolBar_open">open</string>
+    <string name="rb_array">Из array</string>
+    <string name="rb_sp">Из SP</string>
+    <string name="rb_gf">Из GF</string>
 </resources>

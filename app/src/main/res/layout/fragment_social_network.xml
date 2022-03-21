@@ -1,16 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.SocialNetworkFragment">
+    tools:context=".ui.main.SocialNetworkFragment">
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="?actionBarSize"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/sourceArrays"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/rb_array"
+            android:textSize="@dimen/textRB_size" />
+
+        <RadioButton
+            android:id="@+id/sourceSP"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/rb_sp"
+            android:textSize="@dimen/textRB_size" />
+
+        <RadioButton
+            android:id="@+id/sourceGF"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/rb_gf"
+            android:textSize="@dimen/textRB_size" />
+
+    </RadioGroup>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_list"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginTop="?actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item" />
 
 </FrameLayout>

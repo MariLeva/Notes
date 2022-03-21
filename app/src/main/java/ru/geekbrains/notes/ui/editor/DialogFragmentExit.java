@@ -1,4 +1,4 @@
-package ru.geekbrains.notes.ui;
+package ru.geekbrains.notes.ui.editor;
 
 import android.app.Activity;
 import android.app.AlertDialog;

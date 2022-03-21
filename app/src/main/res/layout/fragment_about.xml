@@ -10,7 +10,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:text="@string/about"
-    tools:context=".ui.AboutFragment">
+    tools:context=".ui.editor.AboutFragment">
 
     <TextView
         android:layout_width="match_parent"

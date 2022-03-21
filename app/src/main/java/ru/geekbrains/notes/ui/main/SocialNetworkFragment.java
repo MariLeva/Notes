@@ -1,6 +1,5 @@
-package ru.geekbrains.notes.ui;
+package ru.geekbrains.notes.ui.main;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,13 +20,15 @@ import android.view.ViewGroup;
 
 import java.util.Calendar;
 
-import ru.geekbrains.notes.MainActivity;
+import ru.geekbrains.notes.ui.MainActivity;
 import ru.geekbrains.notes.R;
 import ru.geekbrains.notes.data.CardsSourceImpl;
 import ru.geekbrains.notes.data.Note;
 import ru.geekbrains.notes.data.NoteSource;
 import ru.geekbrains.notes.observe.Observer;
-import ru.geekbrains.notes.observe.Publisher;
+import ru.geekbrains.notes.ui.editor.AboutFragment;
+import ru.geekbrains.notes.ui.editor.DialogFragmentExit;
+import ru.geekbrains.notes.ui.editor.NoteTextFragment;
 
 
 public class SocialNetworkFragment extends Fragment implements OnItemClickListener {

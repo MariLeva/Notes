@@ -1,19 +1,13 @@
-package ru.geekbrains.notes;
+package ru.geekbrains.notes.ui;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import ru.geekbrains.notes.R;
 import ru.geekbrains.notes.observe.Publisher;
-import ru.geekbrains.notes.ui.AboutFragment;
-import ru.geekbrains.notes.ui.DialogFragmentExit;
 import ru.geekbrains.notes.ui.Navigation;
-import ru.geekbrains.notes.ui.SocialNetworkFragment;
+import ru.geekbrains.notes.ui.main.SocialNetworkFragment;
 
 public class MainActivity extends AppCompatActivity {
     private Publisher publisher;

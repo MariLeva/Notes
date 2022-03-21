@@ -1,4 +1,4 @@
-package ru.geekbrains.notes.ui;
+package ru.geekbrains.notes.ui.editor;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    tools:context=".ui.NoteTextFragment">
+    tools:context=".ui.editor.NoteTextFragment">
 
     <TextView
         android:id="@+id/nameNote"

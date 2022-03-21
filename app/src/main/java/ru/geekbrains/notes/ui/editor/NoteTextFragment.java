@@ -1,7 +1,6 @@
-package ru.geekbrains.notes.ui;
+package ru.geekbrains.notes.ui.editor;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -10,8 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +24,9 @@ import com.google.android.material.snackbar.Snackbar;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import ru.geekbrains.notes.MainActivity;
 import ru.geekbrains.notes.R;
-import ru.geekbrains.notes.data.CardsSourceImpl;
 import ru.geekbrains.notes.data.Note;
-import ru.geekbrains.notes.data.NoteSource;
-import ru.geekbrains.notes.observe.Publisher;
+import ru.geekbrains.notes.ui.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
