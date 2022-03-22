@@ -162,17 +162,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
 
     @Override
     public void onItemClick(int position) {
-        Observer observer = new Observer() {
-            @Override
-            public void updateNote(Note note) {
-                ((MainActivity) requireActivity()).getPublisher().unsubscribe(this);
-                noteSource.updateNote(position, note);
-                socialNetworkAdapter.notifyItemChanged(position);
-            }
-        };
-        ((MainActivity) requireActivity()).getPublisher().subscribe(observer);
-        ((MainActivity) requireActivity()).getNavigation().addFragment(NoteTextFragment.newInstance(noteSource.getNote(position)), true);
-    }
+        }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -229,6 +219,18 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
                 noteSource.deleteNote(position);
                 socialNetworkAdapter.notifyItemRemoved(position);
                 return true;
+            }
+            case R.id.toolBar_edit:{
+                Observer observer = new Observer() {
+                    @Override
+                    public void updateNote(Note note) {
+                        ((MainActivity) requireActivity()).getPublisher().unsubscribe(this);
+                        noteSource.updateNote(position, note);
+                        socialNetworkAdapter.notifyItemChanged(position);
+                    }
+                };
+                ((MainActivity) requireActivity()).getPublisher().subscribe(observer);
+                ((MainActivity) requireActivity()).getNavigation().addFragment(NoteTextFragment.newInstance(noteSource.getNote(position)), true);
             }
 
         }

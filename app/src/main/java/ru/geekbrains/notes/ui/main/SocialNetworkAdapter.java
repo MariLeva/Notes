@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import ru.geekbrains.notes.R;
 import ru.geekbrains.notes.data.Note;
@@ -20,7 +21,7 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
 
     private NoteSource data;
     OnItemClickListener onItemClickListener;
-    static final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+    static final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
     private int position;
     Fragment fragment;
 
