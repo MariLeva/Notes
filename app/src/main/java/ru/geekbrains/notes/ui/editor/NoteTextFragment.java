@@ -150,8 +150,6 @@ public class NoteTextFragment extends Fragment {
                                         }
                                     }).show();
                                     return true;
-                                case R.id.popup_edit:
-                                    return true;
                             }
                             return true;
                         }

@@ -3,13 +3,17 @@ package ru.geekbrains.notes.data;
 import android.content.res.Resources;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -64,12 +68,14 @@ public class FireStoreCardsSourceImpl implements NoteSource{
 
     @Override
     public void deleteNote(int position) {
+        collectionReference.document(noteSource.get(position).getId()).delete();
         noteSource.remove(position);
     }
 
     @Override
     public void updateNote(int position, Note note) {
         noteSource.set(position, note);
+        collectionReference.document(note.getId()).set(NoteMapping.toDoc(note));
     }
 
     @Override
@@ -87,6 +93,9 @@ public class FireStoreCardsSourceImpl implements NoteSource{
 
     @Override
     public void clearNote() {
+        for (Note note:noteSource)
+            collectionReference.document(note.getId()).delete();
+        noteSource = new ArrayList<Note>();
         noteSource.clear();
     }
 }
